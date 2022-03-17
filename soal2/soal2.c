@@ -193,7 +193,7 @@ void REAL_PROCESS(){
             fprintf(data, "kategori: %s\n\n", kategori);
         }
         fprintf(data, "nama: %s\n", drakor);
-        fprintf(data, "tahun: %s\n\n", tahun);
+        fprintf(data, "rilis: tahun %s\n\n", tahun);
        // printf("success write data in txt\n");
 
         fclose(data);
