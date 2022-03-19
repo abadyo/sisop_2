@@ -114,20 +114,45 @@ void rm_folder_garputunggu(char bash[], char opsi[], char nm_file[]) {
 
 int main() {
     // skeleton_daemon();
-    // pid_t pid, sid;
-    // pid = fork();
 
-    // if (pid > 0) exit(EXIT_SUCCESS);
+    char *nama_user;
+    nama_user=(char *)malloc(10*sizeof(char));
+    nama_user=getlogin();
 
-    // sid = setsid();
+    char dirutama[100] = "/home/";
+    strcat(dirutama, nama_user);
+    strcat(dirutama, "/tugas/s2/satu");
 
-    // chdir("./");
-  
+    pid_t pid, sid;        // Variabel untuk menyimpan PID
 
-    // umask(0);
-    // close(STDIN_FILENO);
-    // close(STDOUT_FILENO);
-    // close(STDERR_FILENO);
+    pid = fork();     // Menyimpan PID dari Child Process
+
+    /* Keluar saat fork gagal
+    * (nilai variabel pid < 0) */
+    if (pid < 0) {
+        exit(EXIT_FAILURE);
+    }
+
+    /* Keluar saat fork berhasil
+    * (nilai variabel pid adalah PID dari child process) */
+    if (pid > 0) {
+        exit(EXIT_SUCCESS);
+    }
+
+    umask(0);
+
+    sid = setsid();
+    if (sid < 0) {
+        exit(EXIT_FAILURE);
+    }
+
+    if ((chdir(dirutama)) < 0) {
+        exit(EXIT_FAILURE);
+    }
+
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
 
     int m = 0;
     char gacha_weaponlist[200][200];
@@ -137,8 +162,6 @@ int main() {
     srand(time(0));
 
     int primogems = 79000;
-
-
 
     while(1) {
         int detik, menit, jam, hari, bulan;
@@ -151,7 +174,7 @@ int main() {
         hari = local->tm_mday;
         bulan = local->tm_mon;
 
-        if(1) {
+        if(bulan == 3 && hari == 30 && jam == 4 && menit == 44) {
 
             DIR *filecharacter = opendir("characters");
             if(filecharacter) {
@@ -161,9 +184,10 @@ int main() {
 
                 char *chararcter[] = {"wget", "--no-check-certificate", link1,"-O","characterDB.zip", NULL};
                 garputunggu("/usr/bin/wget", chararcter);
+                sleep(10);
                 char *unzipchar[] =  {"unzip", "characterDB.zip", NULL};
                 garputunggu("/usr/bin/unzip", unzipchar);
-                // sleep(10);
+                
             }
 
             // file weapon
@@ -175,9 +199,10 @@ int main() {
 
                 char *weapon[] = {"wget", "--no-check-certificate", link2,"-O","weaponDB.zip", NULL};
                 garputunggu("/usr/bin/wget", weapon);
+                sleep(10);
                 char *unzipweap[] =  {"unzip", "weaponDB.zip", NULL};
                 garputunggu("/usr/bin/unzip", unzipweap);
-                // sleep(10);
+                
             }
 
             // buat dir gacha_gacha
@@ -271,7 +296,7 @@ int main() {
                 char *buatdir90[] = {"mkdir", sekarang, NULL};
                 garputunggu("/bin/mkdir", buatdir90);
 
-                for(int p = 0; p < percobaan/ 10; p++) {
+                for(int p = 0; p < percobaan/ 10 && primogems > 159; p++) {
                     int detik, menit, jam;
                     time_t now;
                     time(&now);
@@ -415,7 +440,7 @@ int main() {
 
 
         }
-        if(bulan == 3 && hari == 30 && jam == 7 && menit == 44) {
+        else if(bulan == 3 && hari == 30 && jam == 7 && menit == 44) {
             zip_garputunggu("zip", "-r", "a", "gacha_gacha");
             rm_folder_garputunggu("rm", "-r", "./gacha_gacha");
             rm_folder_garputunggu("rm", "-r", "./weapons");
