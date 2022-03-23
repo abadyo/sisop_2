@@ -74,3 +74,94 @@ Proses seperti di atas, memanggil fungsi 'garputunggu'
 char *argvunziphewan[] =  {"unzip", "animal.zip", "-d", "modul2", NULL};
 garputunggu("/usr/bin/unzip", argvunziphewan);
 ```
+
+### c
+memindah foto-foto dari folder ke animal ke foldernya masing-masing sesuai nama, gunakan berikut:
+1. Pilih directory animal
+2. Read semua file di dalam dir
+3. cek tiap nama file, kalau ada tulisan darat, pindah ke dir darat, begitu juga dengan yang air
+4. Tidak ada keduanya? hapus
+```C
+DIR *dp;
+struct dirent *ep;
+
+dp = opendir(unziplocation);
+if(dp != NULL) {
+    while((ep = readdir(dp))) {
+        if (strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0 && strstr(ep->d_name, "darat")) {
+            char awal[100] = "modul2/animal/";
+            strcat(awal, ep->d_name); 
+            // printf("%s\n", awal);
+            // char *argvhewandarat[] =  {"mv", awal,"modul2/darat", NULL};
+            // sleep(1);
+            // garputunggu("usr/bin/mv", argvhewandarat);
+            mv_garputunggu("mv", awal, "modul2/darat");
+        } else if (strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0 && strstr(ep->d_name, "air")) {
+            char awal[100] = "modul2/animal/";
+            strcat(awal, ep->d_name); 
+            // printf("%s\n", awal);
+            // char *argvhewandarat[] =  {"mv", awal,"modul2/darat", NULL};
+            // sleep(1);
+            // garputunggu("usr/bin/mv", argvhewandarat);
+            mv_garputunggu("mv", awal, "modul2/air");
+        } else {
+            if (strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0) {
+                char awal[100] = "modul2/animal/";
+                strcat(awal, ep->d_name); 
+                // char *argvrm[] = {"rm", , NULL};
+                rm_garputunggu("rm", awal);
+            }
+            
+        }
+    }
+    (void) closedir (dp);
+} else  perror ("Couldn't open the directory");
+```
+
+### d
+Semua bird di dalam dir darat harus dihapus. gunakan langkah dengan yang sama, jika ada tulisan bird, hapus.
+```C
+DIR *darat;
+
+darat = opendir(filedarat);
+if(darat != NULL) {
+    while((ep = readdir(darat))) {
+        if (strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0 && strstr(ep->d_name, "bird")) {
+            char awal[100] = "modul2/darat/";
+            strcat(awal, ep->d_name); 
+            rm_garputunggu("rm", awal);
+        }
+    }
+    (void) closedir (darat);
+} else  perror ("Couldn't open the directory");
+```
+
+### e
+semua isi di dir ikan dibuat list dengan format user_UID_namafile.
+```C
+DIR *air;
+
+air = opendir(fileair);
+FILE *list_hewan = fopen("./modul2/air/list.txt", "w");
+
+struct stat fs;
+int r;
+
+if(air != NULL) {
+        while((ep = readdir(air))) {
+        if (strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0 && strstr(ep->d_name, "jpg")) {
+            char awal[100] = "modul2/air/";
+            strcat(awal, ep->d_name);
+            r = stat(awal, &fs);
+            char baca = '_', tulis = '_', jalan= '_';
+            if( fs.st_mode & S_IRUSR ) baca = 'r';
+            if( fs.st_mode & S_IWUSR ) tulis = 'w';
+            if( fs.st_mode & S_IXUSR ) jalan = 'x';
+            fprintf(list_hewan, "%s_%c%c%c_%s\n", nama, baca, tulis, jalan, ep->d_name);
+        }
+    }
+    (void) closedir (air);
+} else  perror ("Couldn't open the directory");
+
+fclose(list_hewan);
+```
