@@ -3,6 +3,17 @@
 Modul 2
 
 ## Ginshin impict
+Summary soal:
+1. Download zip yang diberikan, lalu extract, lalu buat directory gacha_gacha
+2. Gacha dipilih random, jumlah percobaan % 10 => buat file dengan format nama hH:mM:sS_gacha_jumlahgacha.txt dengan isi text berupa gacha random antara weapon dan character. percobaan ganjil => character, percobaan genap => weapon. Penulisan di text tersebut dengan format jumlahGacha_tipe_rarity_name_sisaPrimogems. nama dan rarity diambil dengan library json-c, dan primogems di define di awal dengan nilai 79000 dan tiap gacha dilakukan -160. Dan jika percobaan % 90 => buat folder dengan nama total_gacha_totalGachaDilakukan. dan isi folder berupa file gacha yang dibagikan tiap 10 kali. masing-masing file dengan dormat text sebelumnya.
+3. Gacha dilakukan : 30 Maret jam 04:44, 3 jam kemudian, pada hari yang sama, akan dilakukan zip folder gacha_gacha dengan nama not_safe_for_wibu dengan password satuduatiga dan semua folder sebelumnya dihapus hingga menyisakan zip tersebut.
+4. Semua proses dijalankan sekali, aka pakai daemon.
+
+**Pre-process**
+
+Mendefinisikan fungsi fork
+```c
+```
 
 ## Drakor
 
