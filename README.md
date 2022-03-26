@@ -498,6 +498,11 @@ isi zip
 
 ![image](Gambar/soal1_6.PNG)
 
+### kendala yang dihadapi
+1. Proses Daeon tidak bisa dijalankan dan berhenti pada proses download
+2. nama file dalam folder (yang 10 percobaan tiap text) ternyata harus berubah, tiap 10 percobaan, ditambah 10 jadi 20, dan seterusnya. Telah direvisi.
+
+
 ## Drakor
 
 
@@ -813,6 +818,8 @@ garputunggu("/bin/mkdir", argvmkdirdarat);
 sleep(3);
 garputunggu("/bin/mkdir", argvmkdirair);
 ```
+![image](Gambar/soal3_1.PNG)
+![image](Gambar/soal3_2.PNG)
 
 ### b
 Proses seperti di atas, memanggil fungsi 'garputunggu'
@@ -820,7 +827,7 @@ Proses seperti di atas, memanggil fungsi 'garputunggu'
 char *argvunziphewan[] =  {"unzip", "animal.zip", "-d", "modul2", NULL};
 garputunggu("/usr/bin/unzip", argvunziphewan);
 ```
-
+![image](Gambar/soal3_3.PNG)
 ### c
 memindah foto-foto dari folder ke animal ke foldernya masing-masing sesuai nama, gunakan berikut:
 1. Pilih directory animal
@@ -863,6 +870,17 @@ if(dp != NULL) {
     (void) closedir (dp);
 } else  perror ("Couldn't open the directory");
 ```
+isi animal sudah dipindah
+
+![image](Gambar/soal3_4.PNG)
+
+isi folder air
+
+![image](Gambar/soal3_5.PNG)
+
+isi folder darat
+
+![image](Gambar/soal3_6.PNG)
 
 ### d
 Semua bird di dalam dir darat harus dihapus. gunakan langkah dengan yang sama, jika ada tulisan bird, hapus.
@@ -881,6 +899,9 @@ if(darat != NULL) {
     (void) closedir (darat);
 } else  perror ("Couldn't open the directory");
 ```
+semua bird telah hilang
+
+![image](Gambar/soal3_7.PNG)
 
 ### e
 semua isi di dir ikan dibuat list dengan format user_UID_namafile.
@@ -911,3 +932,7 @@ if(air != NULL) {
 
 fclose(list_hewan);
 ```
+![image](Gambar/soal3_8.PNG)
+
+### Kendala yang dihadapi
+null.
