@@ -11,8 +11,469 @@ Summary soal:
 
 **Pre-process**
 
-Mendefinisikan fungsi fork
+Mendefinisikan fungsi fork dan mendeclare nilai-nilai tertentu.
 ```c
+void garputunggu(char bash[], char *arg[]){
+    int status;
+    pid_t child;
+    child = fork();
+    if(child == 0){
+        execv(bash, arg);
+    }
+    else{
+        ((wait(&status))>0);
+    }
+}
+
+void zip_garputunggu(char bash[], char opsi[], char nm_zip[], char lokasi[]) {
+    int status;
+    pid_t child;
+    child = fork();
+    if(child == 0){
+        execlp(bash, bash, opsi, nm_zip, lokasi, NULL);
+    }
+    else{
+        ((wait(&status))>0);
+    }
+}
+
+void rm_garputunggu(char bash[], char nm_file[]) {
+    int status;
+    pid_t child;
+    child = fork();
+    if(child == 0){
+        execlp(bash, bash, nm_file, NULL);
+    }
+    else{
+        ((wait(&status))>0);
+    }
+}
+
+
+void rm_folder_garputunggu(char bash[], char opsi[], char nm_file[]) {
+    int status;
+    pid_t child;
+    child = fork();
+    if(child == 0){
+        execlp(bash, bash, opsi, nm_file, NULL);
+    }
+    else{
+        ((wait(&status))>0);
+    }
+}
+
+int m = 0;
+char gacha_weaponlist[200][200];
+int n = 0;
+char gacha_characterlist[100][200];
+struct dirent *ep;
+srand(time(0));
+
+int primogems = 79000;
+
+```
+
+### a
+mendownload kedua file dengan syntax berikut
+```C
+DIR *filecharacter = opendir("characters");
+    if(filecharacter) {
+        closedir(filecharacter);
+    } else if(ENOENT == errno) {
+        char link1[100] = "https://drive.google.com/uc?id=1xYYmsslb-9s8-4BDvosym7R4EmPi6BHp&export=download";
+
+        char *chararcter[] = {"wget", "--no-check-certificate", link1,"-O","characterDB.zip", NULL};
+        garputunggu("/usr/bin/wget", chararcter);
+        sleep(10);
+        char *unzipchar[] =  {"unzip", "characterDB.zip", NULL};
+        garputunggu("/usr/bin/unzip", unzipchar);
+        
+    }
+
+    // file weapon
+    DIR *fileweapon = opendir("weapons");
+    if(fileweapon) {
+        closedir(fileweapon);
+    } else if(ENOENT == errno) {
+        char link2[100] = "https://drive.google.com/uc?id=1XSkAqqjkNmzZ0AdIZQt_eWGOZ0eJyNlT&export=download";
+
+        char *weapon[] = {"wget", "--no-check-certificate", link2,"-O","weaponDB.zip", NULL};
+        garputunggu("/usr/bin/wget", weapon);
+        sleep(10);
+        char *unzipweap[] =  {"unzip", "weaponDB.zip", NULL};
+        garputunggu("/usr/bin/unzip", unzipweap);
+        
+    }
+```
+membuat dir gacha_gacha dengan syntax berikut
+```c
+DIR *filegacha = opendir("gacha_gacha");
+    if(filegacha) {
+        closedir(filegacha);
+    } else if(ENOENT == errno) {
+        char *buatdirgacha[] = {"mkdir", "gacha_gacha", NULL};
+        garputunggu("/bin/mkdir", buatdirgacha);
+    }
+```
+sebelum poin berikutnya, dilakukan pengecekan file dengan memasukkan seluruh isi dir weapon dan character ke dalam array dan dihitung berapa banyak isinya.
+```c
+if( m < 1 ) {
+    DIR *bacaweapon = opendir("weapons");
+    if(bacaweapon != NULL) {
+        while(ep = readdir(bacaweapon)) {
+            if (strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0 && strstr(ep->d_name, "json")) {
+                strcpy(gacha_weaponlist[m], ep->d_name);
+                m++;
+            }        
+        } 
+        // printf("%d\n", m);
+        closedir(bacaweapon);
+    } else perror ("Couldn't open the directory");
+} 
+
+if( n < 1 ) {
+    DIR *bacacharacter = opendir("characters");
+    if(bacacharacter != NULL) {
+        while(ep = readdir(bacacharacter)) {
+            if (strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0) {
+                strcpy(gacha_characterlist[n], ep->d_name);
+                n++;
+            }        
+        } 
+        closedir(bacacharacter);
+    } else perror ("Couldn't open the directory");
+}
+```
+
+### b
+melakukan gacha dengan ketentuan ganjil = character dan genap = weapon. Dilakukan perobaan sebanyak random_acak setiap program dijalankan.
+```c
+int random_pilih = (rand() % 30) * 10;
+int percobaan = random_pilih;
+```
+untuk percobaan mod 90, membuat folder dengan isi text sebanyak banyak percobaan/10:
+```c
+if(random_pilih % 90 == 0 && random_pilih != 0 && primogems > 159) {
+    char sekarang[100] = "";
+    int d_s = detik;
+    sprintf(sekarang, "./gacha_gacha/total_gacha_%d_%d", random_pilih, d_s);
+    // printf("%s", sekarang);
+    // membuat dir dengan format yang sesuai 
+    char *buatdir90[] = {"mkdir", sekarang, NULL};
+    garputunggu("/bin/mkdir", buatdir90);
+
+// syarat loop, misal 90, dilakukan loop 9 kali untuk masing-masing text dan primogems harus bisa dibagi 160
+    for(int p = 0; p < percobaan/ 10 && primogems > 159; p++) {
+        // mendapatkan nilai waktu sekarang tiap loop
+        int detik, menit, jam;
+        time_t now;
+        time(&now);
+        struct tm *local = localtime(&now);
+        jam = local->tm_hour;
+        menit = local->tm_min;
+        detik = local->tm_sec;
+        // tiap text terdapat perbedaan 1 detik
+        sleep(1);
+        strcpy(sekarang, "");
+        sprintf(sekarang, "./gacha_gacha/total_gacha_%d_%d/%d:%d:%d_gacha_10.txt", random_pilih, d_s, jam, menit, detik);
+        FILE *buat_txt = fopen(sekarang, "w");
+        // printf("%s\n", sekarang);
+
+        if(buat_txt == NULL) {
+            printf("Unable to create file.\n");
+            exit(EXIT_FAILURE);
+        }
+        // tiap file berisi 10 percobaan gacha
+        int ulang = 10;
+        while(ulang != 0 & primogems > 159) {
+            primogems -= 160;
+            // untuk genap = ambil weapon
+            if(ulang % 2 == 0) {
+                int weapon_random = rand() % m;
+                char dirawal_w[100];
+                strcpy(dirawal_w, "./weapons/");
+                strcat(dirawal_w, gacha_weaponlist[weapon_random]);
+                // printf("%s\n", dirawal_w);
+                // proses pengambilan nama dan rarity dari weapon dengan library json-c
+                FILE *json_weapon_file = fopen(dirawal_w, "r");
+                char isijson_weapon[3000];
+                fread(isijson_weapon, 3000, 1, json_weapon_file);
+                fclose(json_weapon_file);
+
+                struct json_object *parsed_json_w;
+                struct json_object *name_weapon;
+                struct json_object *rarity_weapon;
+
+                parsed_json_w = json_tokener_parse(isijson_weapon);
+
+                json_object_object_get_ex(parsed_json_w, "name", &name_weapon);
+                json_object_object_get_ex(parsed_json_w, "rarity", &rarity_weapon);
+
+                fprintf(buat_txt, "%d_weapons_%s_%s_%d\n", random_pilih, json_object_get_string(rarity_weapon), json_object_get_string(name_weapon), primogems);
+                ulang -= 1;
+            } else {
+                // untuk ganjil ambir character
+                int character_random = rand() % n;
+                char dirawal_c[100];
+                strcpy(dirawal_c, "./characters/");
+                strcat(dirawal_c, gacha_characterlist[character_random]);
+                
+                // proses pengambilan nama dan rarity untuk character dengan library json-c
+                FILE *json_character_file = fopen(dirawal_c, "r");
+                char isijson_character[3000];
+                fread(isijson_character, 3000, 1, json_character_file);
+                fclose(json_character_file);
+
+                struct json_object *parsed_json_c;
+                struct json_object *name_character;
+                struct json_object *rarity_character;
+
+                parsed_json_c = json_tokener_parse(isijson_character);
+
+                json_object_object_get_ex(parsed_json_c, "name", &name_character);
+                json_object_object_get_ex(parsed_json_c, "rarity", &rarity_character);
+
+                fprintf(buat_txt, "%d_characters_%s_%s_%d\n", random_pilih, json_object_get_string(rarity_character), json_object_get_string(name_character), primogems);
+                ulang -= 1;
+            }
+        }
+        fclose(buat_txt);
+    }
+```
+untuk mod 10, dilakukan percobaan gacha sen=banyak random_pilih dan hasil dimasukkan ke dalam teks
+```c
+else if (random_pilih % 10 == 0 & random_pilih != 0 && primogems > 159) {
+    char waktu[100] = "";
+    //membuat text dengan format yang sesuai
+    sprintf(waktu, "./gacha_gacha/%d:%d:%d_gacha_%d.txt", jam, menit, detik, random_pilih);
+    // printf("%s", waktu);
+    FILE *buat_txt = fopen(waktu, "w");
+
+    if(buat_txt == NULL) {
+        printf("Unable to create file.\n");
+        exit(EXIT_FAILURE);
+    }
+    // loop dilakukan selagi [rimogems mencukupi
+    while(percobaan != 0 && primogems > 159) {
+        if (primogems / 160 > 0) {
+            // untuk genap = weapon
+            if(percobaan % 2 == 0) {
+                int weapon_random = rand() % m;
+                char dirawal_w[100];
+                strcpy(dirawal_w, "./weapons/");
+                strcat(dirawal_w, gacha_weaponlist[weapon_random]);
+                // printf("%s\n", dirawal_w);
+                // proses pengambilan name dan rarity dari weapon dengan library json-c
+                FILE *json_weapon_file = fopen(dirawal_w, "r");
+                char isijson_weapon[3000];
+                fread(isijson_weapon, 3000, 1, json_weapon_file);
+                fclose(json_weapon_file);
+
+                struct json_object *parsed_json_w;
+                struct json_object *name_weapon;
+                struct json_object *rarity_weapon;
+
+                parsed_json_w = json_tokener_parse(isijson_weapon);
+
+                json_object_object_get_ex(parsed_json_w, "name", &name_weapon);
+                json_object_object_get_ex(parsed_json_w, "rarity", &rarity_weapon);
+
+                primogems -= 160;
+                // masukkan hasil ke dalam teks yang telah dibuat
+                fprintf(buat_txt, "%d_weapons_%s_%s_%d\n", random_pilih, json_object_get_string(rarity_weapon), json_object_get_string(name_weapon), primogems);
+                percobaan -= 1;
+            } else {
+                // untuk ganjil = character
+                int character_random = rand() % n;
+                char dirawal_c[100];
+                strcpy(dirawal_c, "./characters/");
+                strcat(dirawal_c, gacha_characterlist[character_random]);
+
+                // proses pengambilan name dan rarity character 
+                FILE *json_character_file = fopen(dirawal_c, "r");
+                char isijson_character[3000];
+                fread(isijson_character, 3000, 1, json_character_file);
+                fclose(json_character_file);
+
+                struct json_object *parsed_json_c;
+                struct json_object *name_character;
+                struct json_object *rarity_character;
+
+                parsed_json_c = json_tokener_parse(isijson_character);
+
+                json_object_object_get_ex(parsed_json_c, "name", &name_character);
+                json_object_object_get_ex(parsed_json_c, "rarity", &rarity_character);
+
+                primogems -= 160;
+                // masukkan hasil ke dalam teks
+                fprintf(buat_txt, "%d_characters_%s_%s_%d\n", random_pilih, json_object_get_string(rarity_character), json_object_get_string(name_character), primogems);
+                percobaan -= 1;
+            }
+        } else {
+            fprintf(buat_txt, "Primogems anda habis");
+            percobaan = 0;
+            // return EXIT_SUCCESS;
+        }
+        
+    }
+    fclose(buat_txt);
+
+}
+
+```
+
+### c
+penamaan file gacha
+```c
+sprintf(waktu, "./gacha_gacha/%d:%d:%d_gacha_%d.txt", jam, menit, detik, random_pilih);
+FILE *buat_txt = fopen(waktu, "w");
+```
+untuk banyaknya percobaan didapat dengan menggunakan:
+```c
+int random_pilih = (rand() % 30) * 10;
+int percobaan = random_pilih;
+```
+untuk waktu diambil dengan
+```c
+time_t now;
+time(&now);
+struct tm *local = localtime(&now);
+jam = local->tm_hour;
+menit = local->tm_min;
+detik = local->tm_sec;
+sleep(1);
+```
+untuk pembuatam tiap 1 detik, gunakan `sleep(1)`
+
+### d
+untuk mengambil data name dan rarity dari json, gunakan library json-c
+untuk werpon
+```c
+int weapon_random = rand() % m;
+char dirawal_w[100];
+strcpy(dirawal_w, "./weapons/");
+strcat(dirawal_w, gacha_weaponlist[weapon_random]);
+// printf("%s\n", dirawal_w);
+FILE *json_weapon_file = fopen(dirawal_w, "r");
+char isijson_weapon[3000];
+fread(isijson_weapon, 3000, 1, json_weapon_file);
+fclose(json_weapon_file);
+
+struct json_object *parsed_json_w;
+struct json_object *name_weapon;
+struct json_object *rarity_weapon;
+
+parsed_json_w = json_tokener_parse(isijson_weapon);
+
+json_object_object_get_ex(parsed_json_w, "name", &name_weapon);
+json_object_object_get_ex(parsed_json_w, "rarity", &rarity_weapon);
+```
+untuk memasukkan hasil ke dalam text dengan format yang telah ditentukan:
+```c
+fprintf(buat_txt, "%d_weapons_%s_%s_%d\n", random_pilih, json_object_get_string(rarity_weapon), json_object_get_string(name_weapon), primogems);
+```
+untuk character
+```c
+int character_random = rand() % n;
+char dirawal_c[100];
+strcpy(dirawal_c, "./characters/");
+strcat(dirawal_c, gacha_characterlist[character_random]);
+
+FILE *json_character_file = fopen(dirawal_c, "r");
+char isijson_character[3000];
+fread(isijson_character, 3000, 1, json_character_file);
+fclose(json_character_file);
+
+struct json_object *parsed_json_c;
+struct json_object *name_character;
+struct json_object *rarity_character;
+
+parsed_json_c = json_tokener_parse(isijson_character);
+
+json_object_object_get_ex(parsed_json_c, "name", &name_character);
+json_object_object_get_ex(parsed_json_c, "rarity", &rarity_character);
+```
+untuk memasukkan hasil ke dalam text dengan format yang telah ditentukan:
+```c
+fprintf(buat_txt, "%d_characters_%s_%s_%d\n", random_pilih, json_object_get_string(rarity_character), json_object_get_string(name_character), primogems);
+```
+
+### e
+untuk melakukan daemon, dilakukan hal berikut:
+```c
+. . .
+pid_t pid, sid;        // Variabel untuk menyimpan PID
+
+pid = fork();     // Menyimpan PID dari Child Process
+
+/* Keluar saat fork gagal
+* (nilai variabel pid < 0) */
+if (pid < 0) {
+    exit(EXIT_FAILURE);
+}
+
+/* Keluar saat fork berhasil
+* (nilai variabel pid adalah PID dari child process) */
+if (pid > 0) {
+    exit(EXIT_SUCCESS);
+}
+
+umask(0);
+
+sid = setsid();
+if (sid < 0) {
+    exit(EXIT_FAILURE);
+}
+
+if ((chdir(dirutama)) < 0) {
+    exit(EXIT_FAILURE);
+}
+
+close(STDIN_FILENO);
+close(STDOUT_FILENO);
+close(STDERR_FILENO);
+```
+kemudian semua proses dimasukkan ke dalam while loop dengan sleep sebanyak 1 second:
+```c
+while(1) {
+    // semua program dimasukkan disini
+    sleep(1);
+}
+```
+untuk pengecekan waktu, di dalam loop memasukkan:
+```c
+int detik, menit, jam, hari, bulan;
+time_t now;
+time(&now);
+struct tm *local = localtime(&now);
+jam = local->tm_hour;
+menit = local->tm_min;
+detik = local->tm_sec;
+hari = local->tm_mday;
+bulan = local->tm_mon;
+```
+dan untuk pengecekan waktu di masukkan di pengecekan.
+untuk proses gacha yang dilakukan pada 30 Maret jam 04:44 dan 3 jam kemudian untuk zip file gacha_gachaq
+```c
+. . .
+ if(bulan == 3 && hari == 30 && jam == 4 && menit == 44) {
+     // Program gacha disini
+ } else if (bulan == 3 && hari == 30 && jam == 7 && menit == 44) {
+     .// program zip disini
+ }
+ . . .
+```
+untuk proses zip dan delete file pada 3 jam kemudian:
+```c
+ else if(bulan == 3 && hari == 30 && jam == 7 && menit == 44) {
+    zip_garputunggu("zip", "-r", "a", "gacha_gacha");
+    rm_folder_garputunggu("rm", "-r", "./gacha_gacha");
+    rm_folder_garputunggu("rm", "-r", "./weapons");
+    rm_folder_garputunggu("rm", "-r", "./characters");
+    rm_garputunggu("rm", "characterDB.zip");
+    rm_garputunggu("rm", "weaponDB.zip");
+    return EXIT_SUCCESS;
+}   
 ```
 
 ## Drakor
