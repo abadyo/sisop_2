@@ -75,12 +75,12 @@ void garputunggu(char bash[], char *arg[]){
     }
 }
 
-void zip_garputunggu(char bash[], char opsi[], char nm_zip[], char lokasi[]) {
+void zip_garputunggu(char passw[], char namaz[], char namaf[]) {
     int status;
     pid_t child;
     child = fork();
     if(child == 0){
-        execlp(bash, bash, opsi, nm_zip, lokasi, NULL);
+        execlp("zip", "zip", "-P", passw, "-r", namaz, namaf, NULL);
     }
     else{
         ((wait(&status))>0);
@@ -184,7 +184,7 @@ int main() {
 
                 char *chararcter[] = {"wget", "--no-check-certificate", link1,"-O","characterDB.zip", NULL};
                 garputunggu("/usr/bin/wget", chararcter);
-                sleep(10);
+                //sleep(10);
                 char *unzipchar[] =  {"unzip", "characterDB.zip", NULL};
                 garputunggu("/usr/bin/unzip", unzipchar);
                 
@@ -199,7 +199,7 @@ int main() {
 
                 char *weapon[] = {"wget", "--no-check-certificate", link2,"-O","weaponDB.zip", NULL};
                 garputunggu("/usr/bin/wget", weapon);
-                sleep(10);
+                //sleep(10);
                 char *unzipweap[] =  {"unzip", "weaponDB.zip", NULL};
                 garputunggu("/usr/bin/unzip", unzipweap);
                 
@@ -295,6 +295,7 @@ int main() {
                 // printf("%s", sekarang);
                 char *buatdir90[] = {"mkdir", sekarang, NULL};
                 garputunggu("/bin/mkdir", buatdir90);
+                int menghitung = 10;
 
                 for(int p = 0; p < percobaan/ 10 && primogems > 159; p++) {
                     int detik, menit, jam;
@@ -306,7 +307,8 @@ int main() {
                     detik = local->tm_sec;
                     sleep(1);
                     strcpy(sekarang, "");
-                    sprintf(sekarang, "./gacha_gacha/total_gacha_%d_%d/%d:%d:%d_gacha_10.txt", random_pilih, d_s, jam, menit, detik);
+                    sprintf(sekarang, "./gacha_gacha/total_gacha_%d_%d/%d:%d:%d_gacha_%d.txt", random_pilih, d_s, jam, menit, detik, menghitung);
+                    menghitung += 10;
                     FILE *buat_txt = fopen(sekarang, "w");
                     // printf("%s\n", sekarang);
 
@@ -441,7 +443,7 @@ int main() {
 
         }
         else if(bulan == 3 && hari == 30 && jam == 7 && menit == 44) {
-            zip_garputunggu("zip", "-r", "a", "gacha_gacha");
+            zip_garputunggu("satuduatiga", "not_safe_for_wibu.zip", "gacha_gacha");
             rm_folder_garputunggu("rm", "-r", "./gacha_gacha");
             rm_folder_garputunggu("rm", "-r", "./weapons");
             rm_folder_garputunggu("rm", "-r", "./characters");
@@ -450,7 +452,7 @@ int main() {
             return EXIT_SUCCESS;
         }   
         
-        sleep(5);
+        sleep(1);
     }
     
 
