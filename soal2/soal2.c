@@ -88,8 +88,7 @@ void REAL_PROCESS(){
             //printf("kategori: %s\n" , kategori);
 
             //create directory
-            DIR *pDir = opendir(kategori);
-            if(pDir == NULL) makedir(kategori);
+            makedir(kategori);
             
             //copy files to category directory
             copyf(drakor, kategori, filename);
@@ -117,11 +116,10 @@ void REAL_PROCESS(){
                 //printf("kategori2: %s\n" , kategori2);
 
                 //create directory
-                DIR *pDir = opendir(kategori);
-                if(pDir == NULL) makedir(kategori);
+                makedir(kategori2);
                 
                 //copy files to category directory
-                copyf(drakor, kategori, filename);
+                copyf(drakor2, kategori2, filename);
 
                 snprintf(ls[i], sizeof ls[i], "%s;%s;%s", kategori2, tahun2, drakor2);
                 i++;
