@@ -264,7 +264,10 @@ Saat melakukan `strtok`, karena delimiter yang diberikan kurang, maka terciptala
 
 ## Screenshot Hasil Run Soal 2
 
-4 ss masuk nanti setelah bwt direktori gambar
+![image](https://gitlab.com/sisop_warrior/soal-shift-sisop-modul-2-ita13-2022/-/blob/main/Gambar/List_sorted.PNG)
+![image](https://gitlab.com/sisop_warrior/soal-shift-sisop-modul-2-ita13-2022/-/blob/main/Gambar/List_kategori.PNG)
+![image](https://gitlab.com/sisop_warrior/soal-shift-sisop-modul-2-ita13-2022/-/blob/main/Gambar/isi_action.PNG)
+![image](https://gitlab.com/sisop_warrior/soal-shift-sisop-modul-2-ita13-2022/-/blob/main/Gambar/data_action.PNG)
 
 ## Conan ngurusin kebun binatang fsr
 Summary soal:
