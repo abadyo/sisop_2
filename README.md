@@ -144,6 +144,10 @@ if( n < 1 ) {
     } else perror ("Couldn't open the directory");
 }
 ```
+hasil
+
+![image](Gambar/soal1_1.PNG)
+
 
 ### b
 melakukan gacha dengan ketentuan ganjil = character dan genap = weapon. Dilakukan perobaan sebanyak random_acak setiap program dijalankan.
@@ -321,6 +325,17 @@ else if (random_pilih % 10 == 0 & random_pilih != 0 && primogems > 159) {
 }
 
 ```
+hasil text dan folder
+
+![image](Gambar/soal1_2.PNG)
+
+isi text
+
+![image](Gambar/soal1_3.PNG)
+
+isi folder 
+
+![image](Gambar/soal1_4.PNG)
 
 ### c
 penamaan file gacha
@@ -475,6 +490,13 @@ untuk proses zip dan delete file pada 3 jam kemudian:
     return EXIT_SUCCESS;
 }   
 ```
+hasil zip dan semua file sebelumnya di hapus
+
+![image](Gambar/soal1_5.PNG)
+
+isi zip
+
+![image](Gambar/soal1_6.PNG)
 
 ## Drakor
 
